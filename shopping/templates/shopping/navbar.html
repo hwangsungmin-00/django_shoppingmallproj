@@ -1,0 +1,85 @@
+{% load socialaccount %}
+<!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="/"><h2><strong><i class="fas fa-air-freshener"></i>DoScent</strong></h2></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/shopping/"><i class="fas fa-gift"></i>All Products</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/my_company/"><i class="far fa-building"></i>my company</a></li>
+                      <li class="nav-item"><a class="nav-link" href="/my_page/"><i class="far fa-meh-blank"></i>my page</a></li>
+
+                    </ul>
+                    <form class="d-flex">
+                        <button class="btn btn-outline-dark" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            Cart
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                        </button><br>
+                        {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {% if user.socialaccount_set.all.0.get_avatar_url %}
+                  <img class="rounded-circle" width="25px"
+                       src="{{user.socialaccount_set.all.0.get_avatar_url}}">
+                  {% else %}
+                  <img class="rounded-circle" width="25px"
+                       src="https://doitdjango.com/avatar/id/448/889e08cc25fd3f94/svg/{{user.email}}/" >
+                  {% endif %}
+                  {{user.username}}
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a role="button" class="btn btn-primary" href="/accounts/logout/">
+                    Log Out
+                  </a>
+              </div>
+            </li>
+                        {% else %}
+                        <a role="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
+                    Log In
+                  </a>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel"><i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp;Log In</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <a role="button" class="btn btn-outline-dark btn-block btn-sm"
+              href="{% provider_login_url 'google' %}">
+                  <i class="fab fa-google"></i>&nbsp;&nbsp;Log in with Google
+              </a>
+              <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="/accounts/login/">
+                  <i class="far fa-envelope"></i>&nbsp;&nbsp;Log in with E-mail
+              </a>
+            </div>
+            <div class="col-md-6">
+              <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="/accounts/signup/">
+                  <i class="far fa-envelope"></i>&nbsp;&nbsp;Sign up with E-mail
+              </a>
+                <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="{% url 'account_login' %}" class="nav-link">
+                  <i class="fab fa-neos"></i>&nbsp;&nbsp;Sign up with Naver
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
